@@ -1,0 +1,25 @@
+.login-page-container {
+  height: 100vh;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../imgs/carBg.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+.login-paper .MuiFormControl-root {
+  margin-top: 2rem;
+}
+.login-paper {
+  max-width: 400px;
+  padding: 1rem 2rem 4rem 2rem;
+}
+
+.login-paper button {
+  margin-top: 2rem;
+}
+.login-paper input {
+}

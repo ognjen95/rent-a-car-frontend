@@ -1,0 +1,11 @@
+.rent-card {
+  width: 100%;
+  text-align: center;
+}
+.car-card-paper {
+  background-color: lightskyblue;
+}
+.card-text-paper {
+  height: 100 !important;
+  width: 100% !important;
+}

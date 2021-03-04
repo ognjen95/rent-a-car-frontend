@@ -1,0 +1,20 @@
+.car-wraper {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: auto;
+  min-height: 80vh;
+}
+.car-paper {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 3rem;
+  max-width: 60%;
+}
+.car-paper .MuiFormControl-root {
+  margin-top: 2rem;
+  width: 100%;
+}

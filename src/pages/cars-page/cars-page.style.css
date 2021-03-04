@@ -1,0 +1,26 @@
+.carStatsContainer {
+  width: 100%;
+}
+
+.stats {
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  width: 80%;
+}
+.stats span {
+  display: block;
+  padding-top: 1rem;
+  font-size: 1.5rem;
+}
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

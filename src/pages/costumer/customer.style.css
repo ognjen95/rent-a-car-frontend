@@ -1,0 +1,35 @@
+.customer-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.customer-paper {
+  padding: 1rem 4rem;
+  margin: 1rem 0;
+  width: 90%;
+}
+.customer-car {
+  text-align: left;
+  padding: 0;
+}
+
+.customer-car img {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.customer-car-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.customer-car-text div {
+  margin: 1rem;
+}
+
+.customer-paper .MuiTextField-root {
+  margin: 1rem;
+}

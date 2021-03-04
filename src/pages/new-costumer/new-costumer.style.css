@@ -1,0 +1,20 @@
+.new-costumer-wraper {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: auto;
+  min-height: 80vh;
+}
+.new-costumer-paper {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 5rem;
+  max-width: 80%;
+}
+.new-costumer-paper .MuiFormControl-root {
+  margin-top: 2rem;
+  width: 100%;
+}

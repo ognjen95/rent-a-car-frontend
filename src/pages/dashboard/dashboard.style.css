@@ -1,0 +1,31 @@
+.car-card-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.car-card-paper {
+  padding: 2rem 4rem;
+  margin: 1rem;
+  width: 100%;
+}
+.car-card {
+  text-align: left;
+  padding: 0;
+}
+
+.car-card img {
+  margin: 0;
+  max-width: 100%;
+}
+
+.car-card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.car-card-text div {
+  margin: 1rem;
+}
