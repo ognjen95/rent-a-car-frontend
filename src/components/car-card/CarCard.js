@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-const CarCard = ({ img, price, id, available, brand, model, isRented }) => {
+const CarCard = ({ imgUrl, price, id, brand, model, isRented }) => {
+  useEffect(() => {
+    console.log(imgUrl);
+  }, [imgUrl]);
   return (
-    <Paper elevation={12} className="car-card-paper car-card  ">
+    <Paper elevation={12} className="car-card-paper car-card">
       <Grid container justify="center" alignItems="center">
-        <Grid item xs={12} sm={6}>
-          <img src={process.env.PUBLIC_URL + '/imgs/carBg.jpg'} alt="" />
-          {/* <div>{img}</div> */}
+        <Grid item xs={12}>
+          <img src={imgUrl} alt="" />
+          <div> {/* <img src={img} alt="" />{' '} */}</div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Container className="car-card-text">
             <div>
               <h3>

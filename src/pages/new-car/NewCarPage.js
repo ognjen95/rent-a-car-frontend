@@ -15,7 +15,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewCar } from './NewCarAction';
-
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -38,6 +38,8 @@ const NewCarPage = () => {
   const [seats, setSeats] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [price, setprice] = useState('');
+  const [isUplaoding, setIsUploading] = useState('');
+
   const dispatch = useDispatch('');
   const formState = {
     brand,
@@ -81,7 +83,32 @@ const NewCarPage = () => {
         break;
     }
   };
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
 
+    const formData = new FormData();
+    formData.append('imgUrl', file);
+    setIsUploading(true);
+
+    try {
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+      const { data } = await axios.post(
+        'http://localhost:5000/api/upload ',
+        formData,
+        config
+      );
+
+      setImgUrl(data);
+      console.log(imgUrl);
+      setIsUploading(false);
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setIsUploading(false);
+    }
+  };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     dispatch(addNewCar(formState));
@@ -207,28 +234,34 @@ const NewCarPage = () => {
                   placeholder="Type img url or choose file"
                   fullWidth={false}
                   value={imgUrl}
-                  onChange={onChangeHandler}
+                  onChange={uploadFileHandler}
                 />
+                <label htmlFor="imgUrl">Choose a profile picture:</label>
                 <input
+                  name="imgUrl"
+                  onChange={uploadFileHandler}
+                  type="file"
+                ></input>
+                {/* <input
                   className={classes.input}
                   accept="image"
                   id="contained-button-file"
                   multiple
                   type="file"
                   name="imgUrl"
-                  onChange={onChangeHandler}
+                  onChange={uploadFileHandler}
                 />
                 <label htmlFor="contained-button-file">
                   <Button
+                    onChange={uploadFileHandler}
                     variant="contained"
                     color="primary"
-                    value={imgUrl}
                     component="span"
                   >
                     <CloudUploadIcon />
                     Upload
                   </Button>
-                </label>
+                </label> */}
               </div>
               {/* Price */}
               <TextField

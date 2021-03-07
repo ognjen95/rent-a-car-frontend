@@ -4,7 +4,7 @@ import { Container, Grid, Button, Paper } from '@material-ui/core';
 import CarCard from '../../components/car-card/CarCard';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getCarList, searchCarList } from './DashboardAction';
+import { getCarList } from './DashboardAction';
 import SearchForm from '../../components/search-form/SearchForm';
 import { Link } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ const DashboardPage = () => {
   const availableCars = carList.filter((f) => !f.isRented);
 
   useEffect(() => {
+    console.log(carList.imgUrl);
     dispatch(getCarList());
   }, []);
 
@@ -68,9 +69,17 @@ const DashboardPage = () => {
       </Grid>
       <Grid container jusify="center" alignItems="center">
         {searchList.map((i, idx) => (
-          <Grid className="car-card-div" key={idx} item xs={12} md={6} xlg={4}>
+          <Grid
+            className="car-card-div"
+            key={idx}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xlg={3}
+          >
             <CarCard
-              img={i.imgUrl}
+              imgUrl={i.imgUrl}
               brand={i.brand}
               model={i.model}
               year={i.year}
