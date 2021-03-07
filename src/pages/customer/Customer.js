@@ -17,7 +17,7 @@ const Customer = ({ match, history }) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  const formData = { name, email, phone };
+  const formData = { name, email, phone, lastName };
   const dispatch = useDispatch();
 
   const rentedCars = customerRentals;

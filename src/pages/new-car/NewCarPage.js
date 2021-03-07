@@ -9,13 +9,14 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  CircularProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
+import Alert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewCar } from './NewCarAction';
 import axios from 'axios';
+import { newCarReset } from './NewCarSlice';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -51,7 +52,11 @@ const NewCarPage = () => {
     price,
     vehicleType,
   };
-  useEffect(() => {}, []);
+
+  const { isLoading, error, success } = useSelector((state) => state.newCar);
+  useEffect(() => {
+    dispatch(newCarReset());
+  }, []);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -83,7 +88,10 @@ const NewCarPage = () => {
         break;
     }
   };
+
+  // file uploading
   const uploadFileHandler = async (e) => {
+    if (!e.target.files) return;
     const file = e.target.files[0];
 
     const formData = new FormData();
@@ -92,18 +100,18 @@ const NewCarPage = () => {
 
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      if (file) {
+        const { data } = await axios.post(
+          'http://localhost:5000/api/upload ',
+          formData,
+          config
+        );
+        setImgUrl(data);
 
-      const { data } = await axios.post(
-        'http://localhost:5000/api/upload ',
-        formData,
-        config
-      );
-
-      setImgUrl(data);
-      console.log(imgUrl);
-      setIsUploading(false);
-
-      console.log(data);
+        setIsUploading(false);
+      } else {
+        return;
+      }
     } catch (error) {
       console.log(error);
       setIsUploading(false);
@@ -236,32 +244,12 @@ const NewCarPage = () => {
                   value={imgUrl}
                   onChange={uploadFileHandler}
                 />
-                <label htmlFor="imgUrl">Choose a profile picture:</label>
+                <label htmlFor="imgUrl"></label>
                 <input
                   name="imgUrl"
                   onChange={uploadFileHandler}
                   type="file"
                 ></input>
-                {/* <input
-                  className={classes.input}
-                  accept="image"
-                  id="contained-button-file"
-                  multiple
-                  type="file"
-                  name="imgUrl"
-                  onChange={uploadFileHandler}
-                />
-                <label htmlFor="contained-button-file">
-                  <Button
-                    onChange={uploadFileHandler}
-                    variant="contained"
-                    color="primary"
-                    component="span"
-                  >
-                    <CloudUploadIcon />
-                    Upload
-                  </Button>
-                </label> */}
               </div>
               {/* Price */}
               <TextField
@@ -277,17 +265,23 @@ const NewCarPage = () => {
               />
               {/* Submit */}
               <br />
-              <Button
-                fullWidth={true}
-                style={{ marginTop: '2rem', float: 'right' }}
-                className="btn"
-                type="submit"
-                variant="contained"
-                size="large"
-                color="primary"
-              >
-                Add car
-              </Button>
+              {error && <Alert severity="error"> {error}</Alert>}
+              {success && <Alert severity="success"> New car created</Alert>}
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Button
+                  fullWidth={true}
+                  style={{ marginTop: '2rem', float: 'right' }}
+                  className="btn"
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                >
+                  Add car
+                </Button>
+              )}
             </form>
           </Grid>
         </Grid>

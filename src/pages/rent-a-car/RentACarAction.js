@@ -21,6 +21,6 @@ export const rentCar = (formData, id) => async (dispatch) => {
     console.log(data.result);
     if (data.result) return dispatch(rentOrderSuccess(data.result));
   } catch (error) {
-    dispatch(rentOrderError());
+    dispatch(rentOrderError(error.message));
   }
 };

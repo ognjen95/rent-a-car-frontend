@@ -3,9 +3,11 @@ import { Grid, TextField, Button, Container } from '@material-ui/core';
 import './rent-a-car.style.css';
 import StartDatePicker from '../../components/date-picker/StartDatePicker';
 import EndDatePicker from '../../components/date-picker/EndDatePicker';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { rentCar } from './RentACarAction';
 import { useDispatch, useSelector } from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
+import { rentOrderReset } from './RentACarSlice';
 
 const RentACar = ({ match }) => {
   const [fullName, setFullName] = useState('');
@@ -18,13 +20,17 @@ const RentACar = ({ match }) => {
   const dispatch = useDispatch();
 
   const rentData = {
-    name: fullName,
+    fullName,
+    lastName,
     email,
-    phone: tel,
+    tel,
     startDate,
     endDate,
   };
-
+  const { rentOrder, isLoading, success, error } = useSelector(
+    (state) => state.rentOrder
+  );
+  const { totalPrice, daysRented, discountProcent } = rentOrder;
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -45,15 +51,9 @@ const RentACar = ({ match }) => {
         break;
     }
   };
-  useEffect(() => {}, [
-    fullName,
-    email,
-    tel,
-    startDate,
-    endDate,
-    dispatch,
-    match,
-  ]);
+  useEffect(() => {
+    dispatch(rentOrderReset());
+  }, [dispatch, match]);
 
   const carInfo = {
     id: '1324423',
@@ -119,8 +119,9 @@ const RentACar = ({ match }) => {
               <h3>Type: {carInfo.type}</h3>
               <h3>Construction Year: {carInfo.year}</h3>
               <h3>Price per day: {carInfo.pricePerDay} $</h3>
-              <h3>Discount: {carInfo.discount} $</h3>
-              <h3>Discount: {carInfo.totalPrice} $</h3>
+              <h3>Discount: {discountProcent} %</h3>
+              {discountProcent === 15 ? <h3>VIP CUSTOMER </h3> : null}
+              <h3>TotalPrice: {totalPrice} $</h3>
             </Grid>
 
             <Grid xs={12} sm={6} item>
@@ -170,24 +171,29 @@ const RentACar = ({ match }) => {
                     value={tel}
                     onChange={onChangeHandler}
                   />
-                  <StartDatePicker
-                    onChangeHandler={handleStartDateChange}
-                    startDate={startDate}
-                  />
+                  <StartDatePicker onChangeHandler={handleStartDateChange} />
                   <EndDatePicker
                     onChangeHandler={handleEndDateChange}
                     endDate={endDate}
                   />
-                  <Button
-                    fullWidth={true}
-                    className="btn"
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    color="primary"
-                  >
-                    Add cilent
-                  </Button>
+                  {error && <Alert severity="error"> {error}</Alert>}
+                  {success && (
+                    <Alert severity="success"> Car rented successfully! </Alert>
+                  )}
+                  {isLoading ? (
+                    <CircularProgress />
+                  ) : (
+                    <Button
+                      fullWidth={true}
+                      className="btn"
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      color="primary"
+                    >
+                      Add cilent
+                    </Button>
+                  )}
                 </form>
               </Container>
             </Grid>
