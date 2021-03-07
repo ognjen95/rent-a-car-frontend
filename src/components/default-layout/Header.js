@@ -29,12 +29,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -46,8 +44,6 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
     ></Menu>
   );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
 
   return (
     <div className={classes.grow}>
@@ -67,19 +63,14 @@ export default function PrimarySearchAppBar() {
           <div className={classes.sectionDesktop}>
             <Link to="/dashboard">
               <IconButton color="inherit">
-                <span className={classes.navLiText}>Rent </span>
-                <DriveEta />
-              </IconButton>
-            </Link>
-            <Link to="/cars">
-              <IconButton color="inherit">
                 <span className={classes.navLiText}>Cars </span>
                 <DriveEta />
               </IconButton>
             </Link>
-            <Link to="/costumers">
+
+            <Link to="/customers">
               <IconButton color="inherit">
-                <span className={classes.navLiText}>Costumers </span>
+                <span className={classes.navLiText}>Customers </span>
                 <FaceIcon />
               </IconButton>
             </Link>

@@ -19,8 +19,6 @@ export default function BasicTable({ tableHeaders, tableList, toLink }) {
 
   useEffect(() => {}, []);
 
-  //   if (isLoading) return <h3>Loading</h3>;
-  //   if (error) return <h3>{error}</h3>;
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -38,7 +36,7 @@ export default function BasicTable({ tableHeaders, tableList, toLink }) {
             <TableRow className="table-row" key={idx}>
               {Object.keys(row).map((col, i) => (
                 <TableCell key={i} align="left">
-                  <Link to={`/${toLink}/${row.id}`}>{row[col]}</Link>
+                  <Link to={`/${toLink}/${row._id}`}>{row[col]}</Link>
                 </TableCell>
               ))}
             </TableRow>

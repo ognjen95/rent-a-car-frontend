@@ -10,17 +10,35 @@ import {
   InputLabel,
   MenuItem,
 } from '@material-ui/core';
-
+import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewCar } from './NewCarAction';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
 const NewCarPage = () => {
+  const classes = useStyles();
+
   const [brand, setBrand] = useState('');
+  const [vehicleType, setVehicleType] = useState('');
   const [model, setModel] = useState('');
   const [year, setYear] = useState('');
   const [fuel, setFuel] = useState('');
   const [seats, setSeats] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [price, setprice] = useState('');
-
+  const dispatch = useDispatch('');
   const formState = {
     brand,
     model,
@@ -29,6 +47,7 @@ const NewCarPage = () => {
     seats,
     imgUrl,
     price,
+    vehicleType,
   };
   useEffect(() => {}, []);
 
@@ -36,6 +55,9 @@ const NewCarPage = () => {
     const { name, value } = e.target;
 
     switch (name) {
+      case 'vehicleType':
+        setVehicleType(value);
+        break;
       case 'brand':
         setBrand(value);
         break;
@@ -62,7 +84,7 @@ const NewCarPage = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(formState);
+    dispatch(addNewCar(formState));
   };
 
   return (
@@ -75,6 +97,29 @@ const NewCarPage = () => {
           </Grid>
           <Grid xs={12} item>
             <form onSubmit={onSubmitHandler}>
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">
+                  Vehicle Type
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-"
+                  id="vehicleType"
+                  name="vehicleType"
+                  onChange={onChangeHandler}
+                >
+                  {['Hybrid', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
+                    (i, idx) => (
+                      <MenuItem
+                        key={idx}
+                        name={i.toLowerCase()}
+                        value={i.toLowerCase()}
+                      >
+                        {i}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+              </FormControl>
               {/* brand */}
               <TextField
                 required={true}
@@ -117,12 +162,16 @@ const NewCarPage = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="fuelSelect"
-                  value={fuel}
+                  defaultValue={fuel}
                   name="fuel"
                   onChange={onChangeHandler}
                 >
-                  {['petrol', 'diesel', 'hybrid', 'electric'].map((i, idx) => (
-                    <MenuItem key={idx} name={i} value={i}>
+                  {['Petrol', 'Diesel', 'Hybrid', 'Electric'].map((i, idx) => (
+                    <MenuItem
+                      key={idx}
+                      name={i.toLowerCase()}
+                      value={i.toLowerCase()}
+                    >
                       {i}
                     </MenuItem>
                   ))}
@@ -148,25 +197,39 @@ const NewCarPage = () => {
                 </Select>
               </FormControl>
               {/* Upload */}
-              <TextField
-                required={true}
-                type="text"
-                name="imgUrl"
-                id="imgUrl"
-                label="Upload img url"
-                placeholder="Img path"
-                fullWidth={false}
-                value={imgUrl}
-                onChange={onChangeHandler}
-              />
-              <Button
-                style={{ marginTop: '2rem ' }}
-                variant="contained"
-                color="default"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload
-              </Button>
+              <div>
+                <TextField
+                  required={true}
+                  type="text"
+                  name="imgUrl"
+                  id="car-model"
+                  label="Upload image"
+                  placeholder="Type img url or choose file"
+                  fullWidth={false}
+                  value={imgUrl}
+                  onChange={onChangeHandler}
+                />
+                <input
+                  className={classes.input}
+                  accept="image"
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                  name="imgUrl"
+                  onChange={onChangeHandler}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    value={imgUrl}
+                    component="span"
+                  >
+                    <CloudUploadIcon />
+                    Upload
+                  </Button>
+                </label>
+              </div>
               {/* Price */}
               <TextField
                 required={true}

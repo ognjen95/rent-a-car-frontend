@@ -8,13 +8,25 @@
 }
 .car-paper {
   display: flex !important;
-  flex-direction: row !important;
+  flex-direction: column !important;
   justify-content: flex-start !important;
   align-items: center !important;
-  padding: 3rem;
+  padding: 0 10%;
   max-width: 60%;
 }
 .car-paper .MuiFormControl-root {
-  margin-top: 2rem;
+  margin-top: 1rem;
   width: 100%;
+}
+.del-btn-container {
+  margin-top: 1rem;
+  width: 100%;
+}
+.del-btn {
+  float: right !important;
+}
+@media screen and (max-width: 600px) {
+  .car-paper {
+    max-width: 80%;
+  }
 }

@@ -7,7 +7,11 @@ import { CircularProgress } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
 import SearchForm from '../../components/search-form/SearchForm';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getCarList } from '../dashboard/DashboardAction';
 const carsTableHeaders = [
+  'img',
   'ID',
   'Brand',
   'Model',
@@ -18,35 +22,15 @@ const carsTableHeaders = [
   'Price per day - $',
   'Available vehicles',
 ];
-const carsTableList = [
-  {
-    id: '1248983',
-    brand: 'Toyota',
-    model: 'Yaris',
-    type: 'Economy',
-    constructionYear: 2020,
-    fuelType: 'hybrid',
-    seats: 5,
-    pricePerDay: 15,
-    availableVehicles: 3,
-  },
-  {
-    id: '34298396',
-    brand: 'Toyota',
-    model: 'Rav4',
-    type: 'SUV',
-    constructionYear: 2020,
-    fuelType: 'Petrol',
-    seats: 5,
-    pricePerDay: 25,
-    availableVehicles: 2,
-  },
-];
 
 const CarsPage = () => {
   //   const pendingTickets = tickets.filter((f) => f.status === 'Otvoren');
+  const dispatch = useDispatch();
+  const { isLoading, carList, error } = useSelector((state) => state.carList);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getCarList());
+  }, []);
 
   return (
     <Container>
@@ -83,6 +67,7 @@ const CarsPage = () => {
             </Paper>
           </Grid>
         </Grid>
+
         <Grid
           container
           direction="row"
@@ -122,7 +107,7 @@ const CarsPage = () => {
             <Table
               toLink={'car'}
               tableHeaders={carsTableHeaders}
-              tableList={carsTableList}
+              tableList={carList}
             />
           </Grid>
         </Grid>

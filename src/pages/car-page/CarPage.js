@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   Container,
   Grid,
@@ -10,189 +10,260 @@ import {
   InputLabel,
   MenuItem,
 } from '@material-ui/core';
-
+import './car-page.style.css';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-const CarPage = () => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getCar } from './getCarAction';
+import { editCar, deleteCar } from './CarEditAction';
+
+const CarPage = ({ match, history }) => {
+  const { car, isLoading, error } = useSelector((state) => state.car);
+  const { editedCar, isLoading: isEdited, error: editError } = useSelector(
+    (state) => state.car
+  );
+  const [vehicleType, setVehicleType] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [year, setYear] = useState('');
   const [fuel, setFuel] = useState('');
   const [seats, setSeats] = useState('');
   const [imgUrl, setImgUrl] = useState('');
-  const [price, setprice] = useState('');
+  const [price, setPrice] = useState('');
 
-  const formState = {
-    brand,
-    model,
-    year,
-    fuel,
-    seats,
-    imgUrl,
-    price,
-  };
-  useEffect(() => {}, []);
+  const dispatch = useDispatch();
 
+  const formData = { brand, model, year, fuel, seats, imgUrl, price };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
-    switch (name) {
-      case 'brand':
-        setBrand(value);
-        break;
-      case 'model':
-        setModel(value);
-        break;
-      case 'year':
-        setYear(value);
-        break;
-      case 'fuel':
-        setFuel(value);
-        break;
-      case 'seats':
-        setSeats(value);
-        break;
-      case 'imgUrl':
-        setImgUrl(value);
-        break;
-      case 'price':
-        setprice(value);
-        break;
+    if (name === 'vehicleType') {
+      vehicleType(value);
+    } else if (name === 'brand') {
+      // setBrand(value); disabled
+    } else if (name === 'model') {
+      // setModel(value); disabled
+    } else if (name === 'year') {
+      setYear(value);
+    } else if (name === 'fuel') {
+      setFuel(value);
+    } else if (name === 'seats') {
+      setSeats(value);
+    } else if (name === 'imgUrl') {
+      setImgUrl(value);
+    } else if (name === 'price') {
+      setPrice(value);
     }
   };
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    console.log(formState);
-  };
+  useEffect(() => {
+    dispatch(getCar(match.params.id));
 
+    if (!car) {
+      return null;
+    } else {
+      setBrand(car.brand);
+      setModel(car.model);
+      setYear(car.year);
+      setFuel(car.fuel);
+      setSeats(car.seats);
+      setImgUrl(car.imgUrl);
+      setPrice(car.price);
+      setVehicleType(car.vehicleType);
+    }
+  }, [
+    dispatch,
+    car.brand,
+    car.model,
+    car.year,
+    car.fuel,
+    car.seats,
+    car.imgUrl,
+    car.price,
+    car.vehicleType,
+  ]);
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    if (!formData) return;
+    dispatch(editCar(formData, match.params.id));
+  };
+  const deleteHandler = () => {
+    dispatch(deleteCar(match.params.id));
+    history.push('/dashboard');
+  };
   return (
-    <Container className="new-costumer-wraper">
-      <Paper className="new-costumer-paper" elevation={12}>
+    <Container className="car-wraper">
+      <Paper className="car-paper" elevation={12}>
+        <div className="del-btn-container">
+          <Button
+            onClick={deleteHandler}
+            name="delete"
+            className="del-btn"
+            variant="outlined"
+            color="secondary"
+          >
+            Delete Car
+          </Button>
+        </div>
         <Grid direction="column" jutify="center" alignItems="center" container>
           <Grid xs={12} item>
             <h1>Edit car</h1>
             <br />
           </Grid>
           <Grid xs={12} item>
-            <form onSubmit={onSubmitHandler}>
-              {/* brand */}
-              <TextField
-                required={true}
-                type="text"
-                name="brand"
-                id="brand"
-                label="Brand"
-                placeholder="Enter car brend"
-                fullWidth={true}
-                value={brand}
-                onChange={onChangeHandler}
-              />{' '}
-              {/* Model */}
-              <TextField
-                required={true}
-                type="text"
-                name="model"
-                id="car-model"
-                label="Model"
-                placeholder="Enter Car model"
-                fullWidth={true}
-                value={model}
-                onChange={onChangeHandler}
-              />
-              {/* Construction year */}
-              <TextField
-                required={true}
-                type="number"
-                name="year"
-                id="year"
-                label="Construction Year"
-                placeholder="Enter Your phone number"
-                fullWidth={true}
-                value={year}
-                onChange={onChangeHandler}
-              />
-              {/* fuel */}
-              <FormControl>
-                <InputLabel id="demo-simple-select-label">Fuel</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="fuelSelect"
-                  value={fuel}
-                  name="fuel"
+            {isLoading ? (
+              <h1>loading</h1>
+            ) : (
+              <form onSubmit={onSubmitHandler}>
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">
+                    Vehicle Type
+                  </InputLabel>
+                  <Select
+                    disabled={true}
+                    labelId="demo-simple-select-"
+                    id="vehicleType"
+                    name="vehicleType"
+                    onChange={onChangeHandler}
+                    defaultValue={car.vehicleType}
+                  >
+                    {['Hybrid', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
+                      (i, idx) => (
+                        <MenuItem
+                          key={idx}
+                          name={i.toLowerCase()}
+                          value={i.toLowerCase()}
+                        >
+                          {i}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+                <TextField
+                  disabled={true}
+                  required={true}
+                  type="text"
+                  name="brand"
+                  id="brand"
+                  label="Brand"
+                  placeholder="Enter car brend"
+                  fullWidth={true}
+                  value={brand}
                   onChange={onChangeHandler}
-                >
-                  {['petrol', 'diesel', 'hybrid', 'electric'].map((i, idx) => (
-                    <MenuItem key={idx} name={i} value={i}>
-                      {i}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {/* Num of seats */}
-              <FormControl>
-                <InputLabel id="demo-simple-select-label">
-                  Num of seats
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="seats"
-                  value={seats}
+                />{' '}
+                {/* Model */}
+                <TextField
+                  disabled={true}
+                  required={true}
+                  type="text"
+                  name="model"
+                  id="car-model"
+                  label="Model"
+                  placeholder="Enter Car model"
+                  fullWidth={true}
+                  value={model}
                   onChange={onChangeHandler}
+                />
+                {/* Construction year */}
+                <TextField
+                  required={true}
+                  type="number"
+                  name="year"
+                  id="year"
+                  label="Construction Year"
+                  placeholder="Enter Your phone number"
+                  fullWidth={true}
+                  value={year}
+                  onChange={onChangeHandler}
+                />
+                {/* fuel */}
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">Fuel</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="fuelSelect"
+                    value={fuel}
+                    name="fuel"
+                    onChange={onChangeHandler}
+                  >
+                    {['Petrol', 'Diesel', 'Hybrid', 'Electric'].map(
+                      (i, idx) => (
+                        <MenuItem key={idx} value={i.toLowerCase()}>
+                          {i}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+                {/* Num of seats */}
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">
+                    Num of seats
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="seats"
+                    value={seats}
+                    onChange={onChangeHandler}
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i, idx) => (
+                      <MenuItem key={idx} name={i} value={i}>
+                        {i}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                {/* Upload */}
+                <TextField
+                  required={true}
+                  type="text"
+                  name="imgUrl"
+                  id="imgUrl"
+                  label="Upload img url"
+                  placeholder="Img path"
+                  fullWidth={false}
+                  value={imgUrl}
+                  onChange={onChangeHandler}
+                />
+                <Button
+                  style={{ marginTop: '2rem ' }}
+                  variant="contained"
+                  color="default"
+                  startIcon={<CloudUploadIcon />}
                 >
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i, idx) => (
-                    <MenuItem key={idx} name={i} value={i}>
-                      {i}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {/* Upload */}
-              <TextField
-                required={true}
-                type="text"
-                name="imgUrl"
-                id="imgUrl"
-                label="Upload img url"
-                placeholder="Img path"
-                fullWidth={false}
-                value={imgUrl}
-                onChange={onChangeHandler}
-              />
-              <Button
-                style={{ marginTop: '2rem ' }}
-                variant="contained"
-                color="default"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload
-              </Button>
-              {/* Price */}
-              <TextField
-                required={true}
-                type="number"
-                name="price"
-                id="price"
-                label="Car price per day"
-                placeholder="Enter car price per day"
-                fullWidth={false}
-                value={price}
-                onChange={onChangeHandler}
-              />
-              {/* Submit */}
-              <br />
-              <Button
-                fullWidth={true}
-                style={{ marginTop: '2rem', float: 'right' }}
-                className="btn"
-                type="submit"
-                variant="contained"
-                size="large"
-                color="primary"
-              >
-                Save
-              </Button>
-            </form>
+                  Upload
+                </Button>
+                {/* Price */}
+                <TextField
+                  required={true}
+                  type="number"
+                  name="price"
+                  id="price"
+                  label="Car price per day"
+                  placeholder="Enter car price per day"
+                  fullWidth={false}
+                  value={price}
+                  onChange={onChangeHandler}
+                />
+                {/* Submit */}
+                <br />
+                <Button
+                  name="edit"
+                  fullWidth={true}
+                  style={{ marginTop: '2rem', float: 'right' }}
+                  className="btn"
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                >
+                  Save changes
+                </Button>
+              </form>
+            )}
           </Grid>
         </Grid>
       </Paper>

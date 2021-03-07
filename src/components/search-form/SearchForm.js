@@ -5,6 +5,10 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import './search-form.style.css';
+
+import { useDispatch } from 'react-redux';
+
+import { searchCarList } from '../../pages/dashboard/DashboardAction';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2px 4px',
@@ -24,9 +28,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchForm() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const onChangeHandler = (e) => {
     const { value } = e.target;
+    console.log(value);
+    dispatch(searchCarList(value));
   };
 
   return (

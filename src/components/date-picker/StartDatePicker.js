@@ -8,13 +8,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export default function MaterialUIPickers() {
+export default function MaterialUIPickers({ onChangeHandler, startDate }) {
   // The first commit of Material-UI
-  const [startDate, setStartDate] = React.useState(new Date());
-
-  const handleDateChange = (date) => {
-    setStartDate(date);
-  };
 
   useEffect(() => {}, [startDate]);
   return (
@@ -28,7 +23,7 @@ export default function MaterialUIPickers() {
           id="startDate"
           label="Start date"
           value={startDate}
-          onChange={handleDateChange}
+          onChange={onChangeHandler}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}

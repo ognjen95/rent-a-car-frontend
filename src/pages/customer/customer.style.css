@@ -5,13 +5,16 @@
   align-items: center;
 }
 .customer-paper {
-  padding: 1rem 4rem;
+  padding: 1rem 2rem;
   margin: 1rem 0;
   width: 90%;
 }
 .customer-car {
   text-align: left;
   padding: 0;
+}
+.customer-dlt-btn {
+  float: right;
 }
 
 .customer-car img {

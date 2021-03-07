@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
-  TextField,
-  Button,
   Paper,
   FormControlLabel,
   Checkbox,
-  handleChange,
-  CircularProgress,
 } from '@material-ui/core';
 
-const UserRentedCar = ({ img, brend, model, rentDate }) => {
+const UserRentedCar = ({ imgUrl, fuel, brand, model, price, rentDate }) => {
   const [returned, SetReturned] = useState(false);
   const onChangeHandler = (e) => {
     SetReturned(e.target.checked);
@@ -20,15 +16,17 @@ const UserRentedCar = ({ img, brend, model, rentDate }) => {
   return (
     <Paper elevation={12} className="customer-paper customer-car">
       <Grid container>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <img src={process.env.PUBLIC_URL + '/imgs/carBg.jpg'} alt="" />
           {/* <div>{img}</div> */}
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Container className="customer-car-text">
-            <div>{brend}</div>
-            <div> {model}</div>
-            <div>{rentDate} </div>
+            <h3>
+              {brand} - {model}
+            </h3>
+            <h3>{fuel}</h3>
+            <h3>{price}$ per day </h3>
             <div>
               <FormControlLabel
                 control={

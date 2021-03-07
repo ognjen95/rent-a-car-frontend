@@ -1,37 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  TextField,
-  Button,
-  Paper,
-  Container,
-  CircularProgress,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-} from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Grid, TextField, Button, Container } from '@material-ui/core';
 import './rent-a-car.style.css';
+import StartDatePicker from '../../components/date-picker/StartDatePicker';
+import EndDatePicker from '../../components/date-picker/EndDatePicker';
 
-const RentACar = () => {
+import { rentCar } from './RentACarAction';
+import { useDispatch, useSelector } from 'react-redux';
+
+const RentACar = ({ match }) => {
   const [fullName, setFullName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
-  const [brand, setBrand] = useState('');
-  const [model, setModel] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-  useEffect(() => {}, []);
+  const dispatch = useDispatch();
+
+  const rentData = {
+    name: fullName,
+    email,
+    phone: tel,
+    startDate,
+    endDate,
+  };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     switch (name) {
-      case 'brand':
-        setBrand(value);
-        break;
-      case 'model':
-        setModel(value);
-        break;
       case 'tel':
         setTel(value);
         break;
@@ -41,8 +37,23 @@ const RentACar = () => {
       case 'fullName':
         setFullName(value);
         break;
+      case 'lastName':
+        setLastName(value);
+        break;
+      case 'startDate':
+        setStartDate(value);
+        break;
     }
   };
+  useEffect(() => {}, [
+    fullName,
+    email,
+    tel,
+    startDate,
+    endDate,
+    dispatch,
+    match,
+  ]);
 
   const carInfo = {
     id: '1324423',
@@ -59,8 +70,29 @@ const RentACar = () => {
     discount: 0,
   };
 
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    console.log(startDate);
+  };
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+    console.log(endDate);
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    function daysBetween(date1, date2) {
+      const ONE_DAY = 1000 * 60 * 60 * 24;
+
+      const differenceMs = Math.abs(date1 - date2);
+
+      return Math.round(differenceMs / ONE_DAY);
+    }
+
+    const days = daysBetween(startDate, endDate);
+
+    console.log(days);
+    dispatch(rentCar(rentData, match.params.id));
   };
   return (
     <Container>
@@ -100,9 +132,20 @@ const RentACar = () => {
                     name="fullName"
                     id="full name"
                     label="Name"
-                    placeholder="Enter Your name and lastname"
+                    placeholder="Enter Your name"
                     fullWidth={true}
                     value={fullName}
+                    onChange={onChangeHandler}
+                  />{' '}
+                  <TextField
+                    required={true}
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    label="Last Name"
+                    placeholder="Enter Your lastname"
+                    fullWidth={true}
+                    value={lastName}
                     onChange={onChangeHandler}
                   />{' '}
                   <TextField
@@ -126,6 +169,14 @@ const RentACar = () => {
                     fullWidth={true}
                     value={tel}
                     onChange={onChangeHandler}
+                  />
+                  <StartDatePicker
+                    onChangeHandler={handleStartDateChange}
+                    startDate={startDate}
+                  />
+                  <EndDatePicker
+                    onChangeHandler={handleEndDateChange}
+                    endDate={endDate}
                   />
                   <Button
                     fullWidth={true}

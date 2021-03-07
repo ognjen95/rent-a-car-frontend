@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Grid,
-  TextField,
-  Button,
-  Paper,
-  FormControlLabel,
-  Checkbox,
-  handleChange,
-  CircularProgress,
-} from '@material-ui/core';
+import React from 'react';
+import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-const CarCard = ({ img, id, available, brand, model }) => {
-  const [returned, SetReturned] = useState(false);
-  const onChangeHandler = (e) => {
-    SetReturned(e.target.checked);
-  };
-
+const CarCard = ({ img, price, id, available, brand, model, isRented }) => {
   return (
     <Paper elevation={12} className="car-card-paper car-card  ">
       <Grid container justify="center" alignItems="center">
@@ -34,14 +19,28 @@ const CarCard = ({ img, id, available, brand, model }) => {
             </div>
 
             <div>
-              {available ? (
+              <h2>{price}$ per day</h2>
+            </div>
+
+            <div>
+              {!isRented ? (
                 <h3 style={{ color: 'green' }}>Available</h3>
               ) : (
                 <h3 style={{ color: 'red' }}>Not Available</h3>
               )}
             </div>
             <div>
-              {available ? (
+              <Link to={`/car/${id}`}>
+                <Button
+                  style={{ marginRight: '6px' }}
+                  variant="outlined"
+                  size="medium"
+                  color="secondary"
+                >
+                  Edit car
+                </Button>
+              </Link>
+              {!isRented ? (
                 <Link to={`/rent-a-car/${id}`}>
                   <Button
                     type="submit"
