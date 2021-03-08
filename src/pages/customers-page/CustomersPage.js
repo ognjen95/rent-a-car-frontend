@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Grid, Button, Paper } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Container, Grid, Button } from '@material-ui/core';
 import Table from '../../components/tables/Table';
 import { Link } from 'react-router-dom';
-import SearchForm from '../../components/search-form/SearchForm';
-
 import { getCustomersList } from './CustomersAction';
 import { useDispatch, useSelector } from 'react-redux';
 
-const tableHeaders = ['ID', 'Name', 'Last Name', 'Email', 'Phone'];
+const tableHeaders = ['ID', 'Name', , 'Email', 'Phone', 'Last Name'];
 
 const CustomersPage = () => {
   const dispatch = useDispatch();
 
-  const { customers, isLoading, error } = useSelector(
-    (state) => state.customersList
-  );
+  const { customers } = useSelector((state) => state.customersList);
 
   useEffect(() => {
     dispatch(getCustomersList());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container>
@@ -29,22 +25,10 @@ const CustomersPage = () => {
         alignItems="center"
         justify="center"
       >
-        <Grid className="stats-grid" xs={12} md={4} item>
-          <Paper elevation={6} className="stats">
-            <h3>
-              Total customers:
-              <span>10</span>
-            </h3>
-          </Paper>
-        </Grid>
-        <Grid className="stats-grid" xs={12} md={4} item>
-          <Paper elevation={6} className="stats">
-            <h3>
-              Rented cars:
-              <span>otvorenih</span>
-            </h3>
-          </Paper>
-        </Grid>
+        <h3>
+          Total customers:
+          <span>10</span>
+        </h3>
       </Grid>
       <Grid container>
         <Grid
@@ -72,9 +56,6 @@ const CustomersPage = () => {
         <Grid item justify="space-between" container>
           <Grid item>
             <h3>Customer list</h3>
-          </Grid>
-          <Grid item>
-            <SearchForm />
           </Grid>
         </Grid>
 

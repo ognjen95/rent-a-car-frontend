@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Grid,
-  TextField,
-  Button,
-  Paper,
-  CircularProgress,
-} from '@material-ui/core';
+import { Container, Grid, TextField, Button, Paper } from '@material-ui/core';
 
 import './login-component.style.css';
 
 const LoginComponent = ({ history }) => {
   const [name, setName] = useState('');
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    sessionStorage.removeItem('name');
+  }, []);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -25,6 +20,7 @@ const LoginComponent = ({ history }) => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     history.push('/dashboard');
+    sessionStorage.setItem('name', name);
   };
 
   return (
@@ -33,7 +29,6 @@ const LoginComponent = ({ history }) => {
         <Grid className="center" direction="column" container>
           <Grid item>
             <h1>Welcome</h1>
-            <br />
           </Grid>
           <Grid xs={12} item>
             <form onSubmit={onSubmitHandler}>

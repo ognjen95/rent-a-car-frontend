@@ -31,9 +31,7 @@ const RentACar = ({ match }) => {
     (state) => state.rentOrder
   );
 
-  const { car, isLoading: carLoading, error: errorLoading } = useSelector(
-    (state) => state.car
-  );
+  const { car } = useSelector((state) => state.car);
   const { totalPrice, daysRented, discountProcent } = rentOrder;
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -187,6 +185,7 @@ const RentACar = ({ match }) => {
                     onChangeHandler={handleEndDateChange}
                     endDate={endDate}
                   />
+                  <span style={{ opacity: 0.8 }}>1 day rent is minimum</span>
                   {error && <Alert severity="error"> {error}</Alert>}
                   {success && (
                     <Alert severity="success"> Car rented successfully! </Alert>

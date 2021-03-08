@@ -35,12 +35,21 @@ const CarPage = ({ match, history }) => {
   const [isUplaoding, setIsUploading] = useState('');
   const dispatch = useDispatch();
 
-  const formData = { brand, model, year, fuel, seats, imgUrl, price };
+  const formData = {
+    brand,
+    model,
+    year,
+    fuel,
+    seats,
+    imgUrl,
+    vehicleType,
+    price,
+  };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
     if (name === 'vehicleType') {
-      vehicleType(value);
+      setVehicleType(value);
     } else if (name === 'brand') {
       // setBrand(value); disabled
     } else if (name === 'model') {
@@ -159,7 +168,7 @@ const CarPage = ({ match, history }) => {
                     onChange={onChangeHandler}
                     defaultValue={car.vehicleType}
                   >
-                    {['Hybrid', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
+                    {['Luxury', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
                       (i, idx) => (
                         <MenuItem
                           key={idx}

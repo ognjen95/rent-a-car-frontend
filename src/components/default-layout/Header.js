@@ -25,13 +25,18 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  nameText: {
+    paddingRight: '2px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl] = React.useState(null);
-
+  const name = sessionStorage.getItem('name');
   const isMenuOpen = Boolean(anchorEl);
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -76,6 +81,7 @@ export default function PrimarySearchAppBar() {
             </Link>
 
             <Link to="/">
+              <span className={classes.nameText}>{name} </span>
               <IconButton
                 edge="end"
                 aria-label="account of current user"

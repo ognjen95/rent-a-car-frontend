@@ -28,3 +28,16 @@ export const deleteCar = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const carReturn = (id) => async (dispatch) => {
+  try {
+    if (!id) return;
+    const {
+      data,
+    } = await axios.patch(`http://localhost:5000/api/cars/return-car/${id}`, {
+      id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

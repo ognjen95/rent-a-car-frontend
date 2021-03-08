@@ -8,9 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCustomer, editCustomer, deleteCustomer } from './CustomerAction';
 
 const Customer = ({ match, history }) => {
-  const { customer, customerRentals, isLoading, error } = useSelector(
-    (state) => state.customer
-  );
+  const { customer, customerRentals } = useSelector((state) => state.customer);
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -146,11 +144,13 @@ const Customer = ({ match, history }) => {
             {rentedCars.map((i, idx) => (
               <UserRentedCar
                 key={idx}
+                isRented={i.isRented}
                 imgUrl={i.imgUrl}
                 brand={i.brand}
                 model={i.model}
                 fuel={i.fuel}
                 price={i.price}
+                id={i._id}
               />
             ))}
           </div>

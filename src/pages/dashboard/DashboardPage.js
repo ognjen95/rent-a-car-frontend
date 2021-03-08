@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './dashboard.style.css';
-import { Container, Grid, Button, Paper } from '@material-ui/core';
+import { Container, Grid, Button } from '@material-ui/core';
 import CarCard from '../../components/car-card/CarCard';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +10,13 @@ import { Link } from 'react-router-dom';
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
-  const { isLoading, carList, searchList, error } = useSelector(
-    (state) => state.carList
-  );
+  const { carList, searchList } = useSelector((state) => state.carList);
   const availableCars = carList.filter((f) => !f.isRented);
 
   useEffect(() => {
     console.log(carList.imgUrl);
     dispatch(getCarList());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container>
@@ -31,20 +29,20 @@ const DashboardPage = () => {
           justify="center"
         >
           <Grid className="stats-grid" xs={12} md={4} item>
-            <Paper elevation={6} className="stats">
+            <div elevation={6} className="stats">
               <h3>
                 Total cars:
                 <span>{carList.length}</span>
               </h3>
-            </Paper>
+            </div>
           </Grid>
           <Grid className="stats-grid" xs={12} md={4} item>
-            <Paper elevation={6} className="stats">
+            <div elevation={6} className="stats">
               <h3>
                 Available cars:
                 <span>{availableCars.length}</span>
               </h3>
-            </Paper>
+            </div>
           </Grid>
         </Grid>
       </Grid>
