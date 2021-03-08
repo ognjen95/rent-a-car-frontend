@@ -49,10 +49,10 @@ const DashboardPage = () => {
         </Grid>
       </Grid>
       <Grid container direction="row">
-        <Grid className="search-box-grid" xs={6} item>
+        <Grid className="search-box-grid" xs={12} sm={6} item>
           <SearchForm />
         </Grid>
-        <Grid xs={6} item>
+        <Grid xs={12} sm={6} item>
           <Link to="/cars/new-car">
             <Button
               className="btn"

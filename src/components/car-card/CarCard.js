@@ -10,8 +10,7 @@ const CarCard = ({ imgUrl, price, id, brand, model, isRented }) => {
     <Paper elevation={12} className="car-card-paper car-card">
       <Grid container justify="center" alignItems="center">
         <Grid item xs={12}>
-          <img src={imgUrl} alt="" />
-          <div> {/* <img src={img} alt="" />{' '} */}</div>
+          <img src={'http://localhost:5000' + imgUrl} alt="" />
         </Grid>
         <Grid item xs={12}>
           <Container className="car-card-text">

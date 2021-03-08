@@ -8,7 +8,7 @@ import { rentCar } from './RentACarAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import { rentOrderReset } from './RentACarSlice';
-
+import { getCar } from '../car-page/getCarAction';
 const RentACar = ({ match }) => {
   const [fullName, setFullName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -29,6 +29,10 @@ const RentACar = ({ match }) => {
   };
   const { rentOrder, isLoading, success, error } = useSelector(
     (state) => state.rentOrder
+  );
+
+  const { car, isLoading: carLoading, error: errorLoading } = useSelector(
+    (state) => state.car
   );
   const { totalPrice, daysRented, discountProcent } = rentOrder;
   const onChangeHandler = (e) => {
@@ -52,6 +56,7 @@ const RentACar = ({ match }) => {
     }
   };
   useEffect(() => {
+    dispatch(getCar(match.params.id));
     dispatch(rentOrderReset());
   }, [dispatch, match]);
 
@@ -99,7 +104,7 @@ const RentACar = ({ match }) => {
       <div elevation={12} className="rent-card car-card  ">
         <Grid container justify="space-between">
           <Grid item xs={12} md={6}>
-            <img src={process.env.PUBLIC_URL + '/imgs/carBg.jpg'} alt="" />
+            <img src={'http://localhost:5000' + car.imgUrl} alt="" />
             {/* <div>{img}</div> */}
           </Grid>
           <Grid
@@ -113,15 +118,21 @@ const RentACar = ({ match }) => {
           >
             <Grid xs={12} sm={6} item>
               <h1>
-                {carInfo.brand} - {carInfo.model}
+                {car.brand} - {car.model}
               </h1>
-              <h3>Fuel: {carInfo.fuel}</h3>
-              <h3>Type: {carInfo.type}</h3>
-              <h3>Construction Year: {carInfo.year}</h3>
-              <h3>Price per day: {carInfo.pricePerDay} $</h3>
-              <h3>Discount: {discountProcent} %</h3>
-              {discountProcent === 15 ? <h3>VIP CUSTOMER </h3> : null}
-              <h3>TotalPrice: {totalPrice} $</h3>
+              <h3>Fuel: {car.fuel}</h3>
+              <h3>Type: {car.vehicleType}</h3>
+              <h3>Seats: {car.seats}</h3>
+              <h3>Construction Year: {car.year}</h3>
+              <h3>Price per day: {car.price} $</h3>
+              {success ? (
+                <div>
+                  <h3>Days rented: {daysRented} </h3>
+                  <h3>Discount: {discountProcent} %</h3>
+                  {discountProcent === 15 ? <h3>VIP CUSTOMER </h3> : null}
+                  <h3>TotalPrice: {totalPrice} $</h3>
+                </div>
+              ) : null}
             </Grid>
 
             <Grid xs={12} sm={6} item>
@@ -191,7 +202,7 @@ const RentACar = ({ match }) => {
                       size="large"
                       color="primary"
                     >
-                      Add cilent
+                      Rent a car
                     </Button>
                   )}
                 </form>

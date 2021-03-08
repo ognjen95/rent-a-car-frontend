@@ -31,7 +31,7 @@ export const editCustomer = (formData, id) => async (dispatch) => {
   dispatch(editCustomerPending());
 
   try {
-    const { data } = await axios.put(
+    const { data } = await axios.patch(
       `http://localhost:5000/api/customers/edit-customer/${id}`,
       formData,
       {

@@ -9,17 +9,20 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  CircularProgress,
 } from '@material-ui/core';
 import './car-page.style.css';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import axios from 'axios';
+import Alert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCar } from './getCarAction';
 import { editCar, deleteCar } from './CarEditAction';
+import { editCarReset } from './CarEditSlice';
 
 const CarPage = ({ match, history }) => {
   const { car, isLoading, error } = useSelector((state) => state.car);
-  const { editedCar, isLoading: isEdited, error: editError } = useSelector(
-    (state) => state.car
+  const { success, isLoading: isEdited, error: editedtError } = useSelector(
+    (state) => state.editCar
   );
   const [vehicleType, setVehicleType] = useState('');
   const [brand, setBrand] = useState('');
@@ -29,7 +32,7 @@ const CarPage = ({ match, history }) => {
   const [seats, setSeats] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [price, setPrice] = useState('');
-
+  const [isUplaoding, setIsUploading] = useState('');
   const dispatch = useDispatch();
 
   const formData = { brand, model, year, fuel, seats, imgUrl, price };
@@ -56,6 +59,7 @@ const CarPage = ({ match, history }) => {
   };
 
   useEffect(() => {
+    dispatch(editCarReset());
     dispatch(getCar(match.params.id));
 
     if (!car) {
@@ -81,7 +85,34 @@ const CarPage = ({ match, history }) => {
     car.price,
     car.vehicleType,
   ]);
+  // file uploading
+  const uploadFileHandler = async (e) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
 
+    const formData = new FormData();
+    formData.append('imgUrl', file);
+    setIsUploading(true);
+
+    try {
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      if (file) {
+        const { data } = await axios.post(
+          'http://localhost:5000/api/upload ',
+          formData,
+          config
+        );
+        setImgUrl(data);
+
+        setIsUploading(false);
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      setIsUploading(false);
+    }
+  };
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -221,21 +252,19 @@ const CarPage = ({ match, history }) => {
                   required={true}
                   type="text"
                   name="imgUrl"
-                  id="imgUrl"
-                  label="Upload img url"
-                  placeholder="Img path"
+                  id="car-model"
+                  label="Upload image"
+                  placeholder="Type img url or choose file"
                   fullWidth={false}
                   value={imgUrl}
-                  onChange={onChangeHandler}
+                  onChange={uploadFileHandler}
                 />
-                <Button
-                  style={{ marginTop: '2rem ' }}
-                  variant="contained"
-                  color="default"
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Upload
-                </Button>
+                <label htmlFor="imgUrl"></label>
+                <input
+                  name="imgUrl"
+                  onChange={uploadFileHandler}
+                  type="file"
+                ></input>
                 {/* Price */}
                 <TextField
                   required={true}
@@ -250,18 +279,24 @@ const CarPage = ({ match, history }) => {
                 />
                 {/* Submit */}
                 <br />
-                <Button
-                  name="edit"
-                  fullWidth={true}
-                  style={{ marginTop: '2rem', float: 'right' }}
-                  className="btn"
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                >
-                  Save changes
-                </Button>
+                {editedtError && <Alert severity="error"> {error}</Alert>}
+                {success && <Alert severity="success"> Car edited </Alert>}
+                {isEdited ? (
+                  <CircularProgress />
+                ) : (
+                  <Button
+                    name="edit"
+                    fullWidth={true}
+                    style={{ marginTop: '2rem', float: 'right' }}
+                    className="btn"
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                  >
+                    Save changes
+                  </Button>
+                )}
               </form>
             )}
           </Grid>

@@ -146,7 +146,7 @@ const Customer = ({ match, history }) => {
             {rentedCars.map((i, idx) => (
               <UserRentedCar
                 key={idx}
-                img={i.imgUrl}
+                imgUrl={i.imgUrl}
                 brand={i.brand}
                 model={i.model}
                 fuel={i.fuel}

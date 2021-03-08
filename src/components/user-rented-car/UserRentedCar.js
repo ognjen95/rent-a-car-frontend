@@ -7,7 +7,12 @@ import {
   Checkbox,
 } from '@material-ui/core';
 
+import { useDispatch, useSelector } from 'react-redux';
 const UserRentedCar = ({ imgUrl, fuel, brand, model, price, rentDate }) => {
+  const { car, isLoading: carLoading, error: errorLoading } = useSelector(
+    (state) => state.car
+  );
+  const dispatch = useDispatch();
   const [returned, SetReturned] = useState(false);
   const onChangeHandler = (e) => {
     SetReturned(e.target.checked);
@@ -17,7 +22,7 @@ const UserRentedCar = ({ imgUrl, fuel, brand, model, price, rentDate }) => {
     <Paper elevation={12} className="customer-paper customer-car">
       <Grid container>
         <Grid item xs={12} sm={6}>
-          <img src={process.env.PUBLIC_URL + '/imgs/carBg.jpg'} alt="" />
+          <img src={'http://localhost:5000' + imgUrl} alt="" />
           {/* <div>{img}</div> */}
         </Grid>
         <Grid item xs={12} sm={6}>

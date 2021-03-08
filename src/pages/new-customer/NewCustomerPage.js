@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, TextField, Button, Paper } from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  CircularProgress,
+} from '@material-ui/core';
 import './new-customer.style.css';
-
+import Alert from '@material-ui/lab/Alert';
 import { createCustomer } from './NewCustomerAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { newCustomerReset } from './NewCustomerSlice';
 
 const NewCustomerPage = () => {
   const [name, setName] = useState('');
@@ -11,8 +19,13 @@ const NewCustomerPage = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
+  const { isLoading, customer, success, error } = useSelector(
+    (state) => state.newCustomer
+  );
   const dispatch = useDispatch();
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(newCustomerReset());
+  }, [dispatch]);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -91,16 +104,24 @@ const NewCustomerPage = () => {
                 value={phone}
                 onChange={onChangeHandler}
               />
-              <Button
-                fullWidth={true}
-                className="btn"
-                type="submit"
-                variant="contained"
-                size="large"
-                color="primary"
-              >
-                Add cilent
-              </Button>
+              {error && <Alert severity="error"> {error}</Alert>}
+              {success && (
+                <Alert severity="success"> New customer created</Alert>
+              )}
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Button
+                  fullWidth={true}
+                  className="btn"
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                >
+                  Add cilent
+                </Button>
+              )}
             </form>
           </Grid>
         </Grid>

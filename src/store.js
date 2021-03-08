@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import carListReducer from './pages/dashboard/DashboardSlice';
 import newCarReducer from './pages/new-car/NewCarSlice';
 import carReducer from './pages/car-page/getCarSlice';
@@ -22,6 +22,9 @@ const store = configureStore({
     editedCustomer: editCustomerReducer,
     rentOrder: rentSlice,
   },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 export default store;

@@ -142,7 +142,7 @@ const NewCarPage = () => {
                   name="vehicleType"
                   onChange={onChangeHandler}
                 >
-                  {['Hybrid', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
+                  {['Luxury', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
                     (i, idx) => (
                       <MenuItem
                         key={idx}

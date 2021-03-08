@@ -10,30 +10,21 @@ import {
 
 import './login-component.style.css';
 
-const LoginComponent = ({ formChange, history }) => {
-  const [email, SetEmail] = useState('atlagicognjen@gmail.com');
-  const [password, SetPassword] = useState('12345678');
+const LoginComponent = ({ history }) => {
+  const [name, setName] = useState('');
 
   useEffect(() => {}, []);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    if (name === 'email') {
-      SetEmail(value);
-    } else if (name === 'password') {
-      SetPassword(value);
+    if (name === 'name') {
+      setName(value);
     }
   };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    try {
-      if (!email || !password) {
-        return alert('Fill up form');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    history.push('/dashboard');
   };
 
   return (
@@ -41,34 +32,24 @@ const LoginComponent = ({ formChange, history }) => {
       <Container>
         <Grid className="center" direction="column" container>
           <Grid item>
-            <h1>Login</h1>
+            <h1>Welcome</h1>
             <br />
           </Grid>
           <Grid xs={12} item>
             <form onSubmit={onSubmitHandler}>
               <TextField
                 required={true}
-                type="email"
-                name="email"
-                id="standard-basic-email"
-                label="Email"
-                placeholder="Enter Your email"
+                type="name"
+                name="name"
+                id="standard"
+                label="Name"
+                placeholder="Enter Your name"
                 fullWidth={true}
-                value={email}
+                value={name}
                 onChange={onChangeHandler}
               />
               <br />
-              <TextField
-                required={true}
-                type="password"
-                name="password"
-                id="standard-basic-password"
-                label="Password"
-                placeholder="Enter Your password"
-                fullWidth={true}
-                value={password}
-                onChange={onChangeHandler}
-              />{' '}
+
               <Button
                 className="btn"
                 type="submit"
