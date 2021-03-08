@@ -141,14 +141,11 @@ const NewCarPage = () => {
                   id="vehicleType"
                   name="vehicleType"
                   onChange={onChangeHandler}
+                  value={vehicleType}
                 >
                   {['Luxury', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
                     (i, idx) => (
-                      <MenuItem
-                        key={idx}
-                        name={i.toLowerCase()}
-                        value={i.toLowerCase()}
-                      >
+                      <MenuItem key={idx} name={i.toLowerCase()} value={i}>
                         {i}
                       </MenuItem>
                     )
@@ -197,16 +194,12 @@ const NewCarPage = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="fuelSelect"
-                  defaultValue={fuel}
+                  value={fuel}
                   name="fuel"
                   onChange={onChangeHandler}
                 >
                   {['Petrol', 'Diesel', 'Hybrid', 'Electric'].map((i, idx) => (
-                    <MenuItem
-                      key={idx}
-                      name={i.toLowerCase()}
-                      value={i.toLowerCase()}
-                    >
+                    <MenuItem key={idx} name={i.toLowerCase()} value={i}>
                       {i}
                     </MenuItem>
                   ))}

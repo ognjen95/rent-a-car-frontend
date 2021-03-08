@@ -22,6 +22,11 @@ const customerSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    customerReset: (state, action) => {
+      state.isLoading = false;
+      state.error = '';
+      state.customer = '';
+    },
     customerRentalsSuccess: (state, action) => {
       state.customerRentals = action.payload;
     },
@@ -35,6 +40,7 @@ export const {
   customerSuccess,
   customerError,
   customerRentalsSuccess,
+  customerReset,
 } = actions;
 
 export default reducer;

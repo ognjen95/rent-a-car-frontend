@@ -6,7 +6,7 @@ import UserRentedCar from '../../components/user-rented-car/UserRentedCar';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getCustomer, editCustomer, deleteCustomer } from './CustomerAction';
-
+import { customerReset } from './CustomerSlice';
 const Customer = ({ match, history }) => {
   const { customer, customerRentals } = useSelector((state) => state.customer);
 
@@ -25,10 +25,10 @@ const Customer = ({ match, history }) => {
     if (!customer) {
       return null;
     } else {
-      setName(customer.name);
-      setEmail(customer.email);
-      setPhone(customer.phone);
-      setLastName(customer.lastName);
+      setName(customer.name || '');
+      setEmail(customer.email || '');
+      setPhone(customer.phone || '');
+      setLastName(customer.lastName || '');
     }
   }, [
     dispatch,
