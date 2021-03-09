@@ -22,9 +22,7 @@ const UserRentedCar = ({ imgUrl, fuel, brand, model, price, id, isRented }) => {
     }
   };
 
-  useEffect(() => {
-    // setReturned(!isRented);
-  }, [returned]);
+  useEffect(() => {}, [returned]);
   return (
     <Paper elevation={12} className="customer-paper customer-car">
       {isRented ? (

@@ -25,25 +25,19 @@ const DashboardPage = () => {
           item
           className="carStatsContainer"
           container
+          direction="column"
           alignItems="center"
           justify="center"
         >
-          <Grid className="stats-grid" xs={12} md={4} item>
-            <div elevation={6} className="stats">
-              <h3>
-                Total cars:
-                <span>{carList.length}</span>
-              </h3>
-            </div>
-          </Grid>
-          <Grid className="stats-grid" xs={12} md={4} item>
-            <div elevation={6} className="stats">
-              <h3>
-                Available cars:
-                <span>{availableCars.length}</span>
-              </h3>
-            </div>
-          </Grid>
+          <h3>
+            Total cars:
+            <span>{carList.length}</span>
+          </h3>
+
+          <h3>
+            Available cars:
+            <span>{availableCars.length}</span>
+          </h3>
         </Grid>
       </Grid>
       <Grid container direction="row">

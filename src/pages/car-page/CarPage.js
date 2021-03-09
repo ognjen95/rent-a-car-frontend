@@ -170,7 +170,11 @@ const CarPage = ({ match, history }) => {
                   >
                     {['Luxury', 'SUV', 'Estate', 'Economy', 'Cargo'].map(
                       (i, idx) => (
-                        <MenuItem key={idx} name={i.toLowerCase()} value={i}>
+                        <MenuItem
+                          key={idx}
+                          name={i.toLowerCase()}
+                          value={i.toLowerCase()}
+                        >
                           {i}
                         </MenuItem>
                       )
@@ -226,7 +230,11 @@ const CarPage = ({ match, history }) => {
                   >
                     {['Petrol', 'Diesel', 'Hybrid', 'Electric'].map(
                       (i, idx) => (
-                        <MenuItem key={idx} value={i} name={i.toLowerCase()}>
+                        <MenuItem
+                          key={idx}
+                          value={i.toLowerCase()}
+                          name={i.toLowerCase()}
+                        >
                           {i}
                         </MenuItem>
                       )
